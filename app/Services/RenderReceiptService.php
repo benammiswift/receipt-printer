@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 class RenderReceiptService
 {
     private ?string $html;
+    public ?string $absolutePath;
     public function __construct(
         public Receipt $receipt,
     ) {
@@ -38,6 +39,8 @@ class RenderReceiptService
 
         $tmpAbsolutePath = Storage::disk('local')->path($tmpPath);
         $outputAbsolutePath = public_path($this->receipt->filename);
+
+        $this->absolutePath = $outputAbsolutePath;
 
         Storage::disk('public')->makeDirectory('receipts');
 

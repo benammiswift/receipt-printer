@@ -38,9 +38,7 @@ class CreateReceipt extends Command
         $receipt = (new CreateReceiptService(
             title: $title,
             description: $description,
-        ))();
-
-        (new RenderReceiptService($receipt))();
+        ))()->receipt;
 
         $this->info('Receipt created successfully!');
     }

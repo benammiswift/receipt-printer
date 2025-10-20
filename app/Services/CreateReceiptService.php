@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 class CreateReceiptService
 {
     public ?string $filename = null;
+    public ?Receipt $receipt;
+    public ?string $receiptPath;
     public function __construct(
         public string $title,
         public string $description,
@@ -15,10 +17,12 @@ class CreateReceiptService
 
     }
 
-    public function __invoke(): Receipt
+    public function __invoke(): self
     {
         return $this->generateFilename()
-            ->makeModel();
+            ->makeModel()
+            ->renderView()
+            ->printReceipt();
     }
 
     public function generateFilename(): self
@@ -27,12 +31,25 @@ class CreateReceiptService
         return $this;
     }
 
-    public function makeModel(): Receipt
+    public function makeModel(): self
     {
-        return Receipt::create([
+        $this->receipt = Receipt::create([
             'title' => $this->title,
             'description' => $this->description,
             'filename' => $this->filename,
         ]);
+        return $this;
+    }
+
+    public function renderView(): self
+    {
+        $this->receiptPath = (new RenderReceiptService($this->receipt))()->absolutePath;
+        return $this;
+    }
+
+    public function printReceipt(): self
+    {
+        (new PrintReceiptService($this->receiptPath))();
+        return $this;
     }
 }
