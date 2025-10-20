@@ -24,7 +24,7 @@ it('counts receipts correctly for each timeframe', function () {
     $makeReceiptAt($now->copy()->startOfWeek()); // 2025-10-20 00:00 -> should count
     $makeReceiptAt($now->copy()); // 2025-10-20 12:00 -> should count
 
-    expect(DashboardHelper::getDashboardCount(Timeframe::LAST_WEEK))
+    expect(DashboardHelper::getDashboardCount(Timeframe::THIS_WEEK))
         ->toBe(2);
 
 
@@ -33,7 +33,7 @@ it('counts receipts correctly for each timeframe', function () {
     $makeReceiptAt(Carbon::create(2025, 9, 30, 23, 59, 59)); // Sept -> should NOT count (for month), but WILL count for year/all-time
     $makeReceiptAt(Carbon::create(2025, 10, 1, 0, 0, 0)); // Oct 1 -> should count
 
-    expect(DashboardHelper::getDashboardCount(Timeframe::LAST_MONTH))
+    expect(DashboardHelper::getDashboardCount(Timeframe::THIS_MONTH))
         ->toBe(4); // Oct 19 + Oct 20 00:00 + Oct 20 12:00 + Oct 1 = 4
 
 
@@ -42,7 +42,7 @@ it('counts receipts correctly for each timeframe', function () {
     $makeReceiptAt(Carbon::create(2024, 12, 31, 23, 59, 59)); // 2024 -> should NOT count
     $makeReceiptAt(Carbon::create(2025, 1, 1, 0, 0, 0)); // 2025 -> should count
 
-    expect(DashboardHelper::getDashboardCount(Timeframe::LAST_YEAR))
+    expect(DashboardHelper::getDashboardCount(Timeframe::THIS_YEAR))
         ->toBe(6); // All receipts in 2025: Jan 1, Sep 30, Oct 1, Oct 19, Oct 20 00:00, Oct 20 12:00
 
     // --- ALL_TIME (since 100 years ago) ---
