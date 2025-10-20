@@ -15,7 +15,7 @@ class CreateReceiptService
 
     }
 
-    public function __invoke(): self
+    public function __invoke(): Receipt
     {
         return $this->generateFilename()
             ->makeModel();
@@ -23,20 +23,16 @@ class CreateReceiptService
 
     public function generateFilename(): self
     {
-        $this->filename = sprintf(
-            "/storage/private/receipts/%s.png",
-            Str::uuid()->toString()
-        );
+        $this->filename = 'receipts/' . Str::uuid() . '.png';
         return $this;
     }
 
-    public function makeModel(): self
+    public function makeModel(): Receipt
     {
-        Receipt::create([
+        return Receipt::create([
             'title' => $this->title,
             'description' => $this->description,
             'filename' => $this->filename,
         ]);
-        return $this;
     }
 }
