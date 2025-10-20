@@ -45,7 +45,7 @@ class RenderReceiptService
         Storage::disk('public')->makeDirectory('receipts');
 
         $command = sprintf(
-            'wkhtmltoimage --width 450 --quality 100 %s %s 2>&1',
+            '/usr/bin/wkhtmltoimage --width 450 --quality 100 %s %s 2>&1',
             escapeshellarg($tmpAbsolutePath),
             escapeshellarg($outputAbsolutePath)
         );
