@@ -14,7 +14,7 @@ class CreateReceipt extends Component
     #[Validate('required|string|max:255')]
     public string $title = '';
 
-    #[Validate('required|string|max:1000')]
+    #[Validate('required|string')]
     public string $description = '';
 
     #[On('open-create-receipt')]
