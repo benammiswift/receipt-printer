@@ -2,7 +2,19 @@
 @use('App\Helpers\DashboardHelper')
 @use('App\Models\Receipt')
 <x-layouts.app :title="__('Dashboard')">
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
+    <div
+        class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl"
+        x-data
+        @keydown.window="
+            const k = $event.key;
+            const tag = ($event.target && $event.target.tagName) ? $event.target.tagName.toUpperCase() : '';
+            const isFormField = ['INPUT','TEXTAREA','SELECT'].includes(tag) || ($event.target && $event.target.isContentEditable);
+            if (!isFormField && (k === 'c' || k === 'C') && !$event.metaKey && !$event.ctrlKey && !$event.altKey) {
+                $event.preventDefault();
+                window.dispatchEvent(new CustomEvent('toggle-create-receipt', { detail: { open: true } }))
+            }
+        "
+    >
         <div class="flex items-center justify-between">
             <div class="grid flex-1 auto-rows-min gap-4 md:grid-cols-3 text-pink-500">
                 <div

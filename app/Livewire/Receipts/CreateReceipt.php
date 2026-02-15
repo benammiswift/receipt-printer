@@ -29,6 +29,13 @@ class CreateReceipt extends Component
         $this->open = false;
     }
 
+    public function cancel(): void
+    {
+        // Clear the form fields and close the modal
+        $this->reset(['title', 'description']);
+        $this->open = false;
+    }
+
     public function create(): mixed
     {
         $this->validate();

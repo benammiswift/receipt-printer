@@ -1,6 +1,9 @@
 <div
     x-data="{ open: $wire.entangle('open') }"
     @toggle-create-receipt.window="open = ($event.detail && 'open' in $event.detail) ? $event.detail.open : true; open ? $wire.open() : $wire.close()"
+    @keydown.escape.window="if (open) { $event.preventDefault(); $wire.cancel() }"
+    @keydown.enter.window="if (open && $event.target.tagName !== 'TEXTAREA') { $event.preventDefault(); $wire.create() }"
+    x-effect="if (open) { $nextTick(() => { $refs.titleInput && $refs.titleInput.focus() }) }"
     x-cloak
 >
     <!-- Overlay -->
@@ -37,7 +40,7 @@
             <form wire:submit.prevent="create" class="space-y-4">
                 <div>
                     <label for="title" class="block text-xs uppercase tracking-wide mb-1 text-pink-500">Title</label>
-                    <input id="title" type="text" wire:model.defer="title"
+                    <input id="title" type="text" wire:model.defer="title" x-ref="titleInput"
                            class="w-full rounded-md border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-pink-500 focus:ring-pink-500 focus:border-pink-500 mt-2 p-2"
                            placeholder="e.g. Fix modal on mobile" />
                     @error('title')
@@ -56,7 +59,7 @@
                 </div>
 
                 <div class="pt-2 flex items-center justify-end gap-2">
-                    <button type="button" class="px-4 py-2 rounded-md border border-neutral-300 dark:border-neutral-700 text-pink-500 hover:bg-neutral-100 dark:hover:bg-neutral-800" wire:click="close">Cancel</button>
+                    <button type="button" class="px-4 py-2 rounded-md border border-neutral-300 dark:border-neutral-700 text-pink-500 hover:bg-neutral-100 dark:hover:bg-neutral-800" wire:click="cancel">Cancel</button>
                     <button type="submit" class="px-4 py-2 rounded-md bg-pink-500 text-white hover:bg-pink-600 disabled:opacity-50" wire:loading.attr="disabled">
                         <span wire:loading.remove>Create</span>
                         <span wire:loading>Creating...</span>
